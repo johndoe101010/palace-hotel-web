@@ -127,6 +127,16 @@
     letter-spacing: -0.01em;
   }
   ::selection { background: hsl(var(--primary) / 0.4); color: hsl(var(--foreground)); }
+
+  /* Offset anchor targets so sticky navbar doesn't cover section headings */
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+  @media (min-width: 768px) {
+    section[id] {
+      scroll-margin-top: 96px;
+    }
+  }
 }
 
 @layer components {
@@ -194,6 +204,30 @@
   .btn-ghost-gold:hover {
     background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
+  }
+
+  /* Botón "Ver habitaciones" — visible sobre imagen en móvil */
+  .btn-ghost-gold-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    border: 1px solid hsl(var(--primary));
+    color: hsl(var(--foreground));
+    background: hsl(var(--ink) / 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.5s var(--ease-luxe);
+    font-weight: 500;
+  }
+  .btn-ghost-gold-solid:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
   }
 
   .text-gold {

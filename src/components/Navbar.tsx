@@ -24,6 +24,33 @@ const isCurrentPath = (href: string) => {
   return path !== "/" && window.location.pathname === path;
 };
 
+const scrollToSection = (hash: string) => {
+  const el = document.getElementById(hash);
+  if (!el) return;
+  const navbar = document.querySelector("header");
+  const offset = navbar ? navbar.offsetHeight : 0;
+  const top = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top, behavior: "smooth" });
+};
+
+const handleNavClick = (
+  e: React.MouseEvent<HTMLAnchorElement>,
+  href: string,
+  onClose?: () => void
+) => {
+  const [path, hash] = href.split("#");
+  const isHomePage = window.location.pathname === "/" || window.location.pathname === "";
+  const targetIsHome = path === "/" || path === "";
+
+  if (onClose) onClose();
+
+  if (hash && targetIsHome && isHomePage) {
+    e.preventDefault();
+    scrollToSection(hash);
+  }
+  // else: let browser navigate normally (will land on /#hash, browser will scroll)
+};
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -33,6 +60,15 @@ const Navbar = () => {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // On mount, if there's a hash in URL, scroll to it with offset
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    // Small delay to let page render
+    const timer = setTimeout(() => scrollToSection(hash), 100);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -56,6 +92,7 @@ const Navbar = () => {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`${navLinkClass} ${isCurrentPath(link.href) ? "text-primary" : ""}`}
               >
                 {link.label}
@@ -92,7 +129,7 @@ const Navbar = () => {
             <a
               key={link.label}
               href={link.href}
-              onClick={() => setOpen(false)}
+              onClick={(e) => handleNavClick(e, link.href, () => setOpen(false))}
               className={`${mobileNavLinkClass} ${isCurrentPath(link.href) ? "text-primary" : ""}`}
             >
               {link.label}

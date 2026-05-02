@@ -49,15 +49,15 @@ const Intro = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 mt-12 pt-10 border-t border-border/50">
+          <div className="grid grid-cols-3 gap-4 mt-12 pt-10 border-t border-border/50">
             {[
               { n: String(siteData.totalRooms), l: "Habitaciones" },
               { n: String(siteData.totalSuites), l: "Suites" },
               { n: `${siteData.checkIn}h`, l: "Check-in" },
             ].map((s) => (
-              <div key={s.l}>
-                <div className="font-display text-4xl md:text-5xl text-gold mb-1">{s.n}</div>
-                <div className="text-xs uppercase tracking-[0.25em] text-foreground/60">{s.l}</div>
+              <div key={s.l} className="min-w-0">
+                <div className="font-display text-3xl md:text-5xl text-gold mb-1 leading-none">{s.n}</div>
+                <div className="text-[10px] md:text-xs uppercase tracking-[0.15em] md:tracking-[0.25em] text-foreground/60 leading-tight mt-1">{s.l}</div>
               </div>
             ))}
           </div>
